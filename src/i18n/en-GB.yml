@@ -17,6 +17,9 @@ buttons:
   create:
     emoji: 🎫
     text: Create a ticket
+  do_not_close:
+    emoji: ✋
+    text: Do not close
   edit:
     emoji: ✏️
     text: Edit
@@ -64,6 +67,18 @@ commands:
       success:
         description: "{member} has been added to {ticket}."
         title: ✅ Added
+    alert:
+      already_alerted:
+        description: This ticket is already waiting for a response.
+        title: ❌ Already alerted
+      description: Warn the ticket creator that the ticket will be closed for inactivity
+      name: alert
+      not_staff:
+        description: Only staff members can send inactivity alerts.
+        title: ❌ Error
+      success:
+        description: The ticket creator has been alerted. This ticket will be closed <t:{timestamp}:R> unless they respond.
+        title: ✅ Alert sent
     claim:
       description: Claim a ticket
       name: claim
@@ -439,6 +454,12 @@ modals:
     label: Topic
     placeholder: What is this ticket about?
 ticket:
+  alert:
+    description: |
+      There hasn't been any activity in this ticket for a while.
+      This ticket will be closed automatically <t:{timestamp}:R> unless you respond.
+      Use the buttons below to close it now, or to keep it open.
+    title: ⏰ Are you still there?
   answers:
     no_value: "*No response*"
   claimed: 🙌 {user} has claimed this ticket.

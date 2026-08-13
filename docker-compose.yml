@@ -21,7 +21,7 @@ services:
       MYSQL_USER: tickets
 
   bot:
-    image: eartharoid/discord-tickets:4.0
+    image: ghcr.io/lucky13-infiniti/ticketbot:latest
     depends_on:
       - mysql
     restart: unless-stopped

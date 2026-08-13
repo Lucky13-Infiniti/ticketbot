@@ -16,8 +16,9 @@ module.exports = async function handleStaleTickets(client, staleInterval) {
 				where: { open: true },
 			},
 		},
-		// where: { staleAfter: { not: null } },
-		where: { staleAfter: { gte: staleInterval } },
+		// guilds without `staleAfter` are still processed because their tickets
+		// may have been marked as stale manually (`/alert`); the automatic
+		// marking below is still gated on `staleAfter`.
 	});
 	let processed = 0;
 	let closed = 0;
@@ -50,7 +51,10 @@ module.exports = async function handleStaleTickets(client, staleInterval) {
 						await client.tickets.finallyClose(ticket.id, $);
 						closed++;
 					}
-				} else if (Date.now() - (ticket.lastMessageAt || ticket.createdAt) >= guild.staleAfter) {
+				} else if (
+					guild.staleAfter >= staleInterval &&
+					Date.now() - (ticket.lastMessageAt || ticket.createdAt) >= guild.staleAfter
+				) {
 					// set as stale
 					/** @type {import("discord.js").TextChannel} */
 					const channel = await client.channels.fetch(ticket.id);
