@@ -1,11 +1,13 @@
 const { randomBytes } = require('crypto');
 
+const pattern = /^\/(?!\/)[^\s]*$/;
+
 module.exports.get = () => ({
 	handler: async function (req, res) {
 		const { client } = req.routeOptions.config;
 
 		const state = new URLSearchParams({
-			redirect: req.query.r ?? '',
+			redirect: pattern.test(req.query.r ?? '') ? req.query.r : '',
 			secret: randomBytes(8).toString('hex'),
 		});
 

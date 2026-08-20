@@ -1,3 +1,5 @@
+const pattern = /^\/(?!\/)[^\s]*$/;
+
 module.exports.get = () => ({
 	handler: async function (req, res) {
 		const cookie = req.cookies['oauth2-state'];
@@ -34,7 +36,9 @@ module.exports.get = () => ({
 			method: 'POST',
 		})).json();
 
-		const redirect = (data.guild?.id && `/settings/${data.guild?.id}`) || state.get('redirect') || '/';
+		let redirect = (data.guild?.id && `/settings/${data.guild?.id}`) || state.get('redirect') || '/';
+
+		if (!pattern.test(redirect)) redirect = '/';
 
 		const bearerOptions = { headers: { 'Authorization': `Bearer ${data.access_token}` } };
 		const user = await (await fetch('https://discordapp.com/api/users/@me', bearerOptions)).json();

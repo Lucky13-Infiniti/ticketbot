@@ -113,8 +113,8 @@ module.exports.post = fastify => ({
 
 		const category = await client.prisma.category.create({
 			data: {
-				guild: { connect: { id: guild.id } },
 				...data,
+				guild: { connect: { id: guild.id } },
 				questions: { createMany: { data: data.questions ?? [] } },
 			},
 		});

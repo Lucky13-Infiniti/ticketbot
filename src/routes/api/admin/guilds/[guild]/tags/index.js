@@ -25,8 +25,8 @@ module.exports.post = fastify => ({
 		const data = req.body;
 		const tag = await client.prisma.tag.create({
 			data: {
-				guild: { connect: { id: guild.id } },
 				...data,
+				guild: { connect: { id: guild.id } },
 			},
 		});
 
